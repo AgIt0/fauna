@@ -2,6 +2,7 @@ class Arp
   def self.all
     `ip neigh show nud reachable`.split(/\n/).map do |entry|
       addresses = *entry.scan(/\A([0-9a-f:.]*?) dev ([a-z0-9.]*?) lladdr ([0-9a-f:].*?) .*\z/i).first
+      next if addresses.empty?
       Arp.new(*addresses)
     end.compact
   end
